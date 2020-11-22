@@ -1,0 +1,26 @@
+ENV['VAGRANT_EXPERIMENTAL'] = 'disks'
+Vagrant.require_version ">= 2.2.10"
+
+Vagrant.configure("2") do |config|
+  config.vm.provider "virtualbox" do |v|
+    v.name = "training-linux"
+    v.memory = "1024"
+  end
+  
+  config.vm.box = "training-linux"
+  config.vm.box_url = "https://cloud.centos.org/centos/8/vagrant/x86_64/images/CentOS-8-Vagrant-8.0.1905-1.x86_64.vagrant-virtualbox.box"
+  config.vm.box_check_update = false
+  
+  config.vbguest.installer_options = { allow_kernel_upgrade: true }
+
+  # NAT network interface for inernet access
+  #config.vm.network "public_network", type: "dhcp"
+
+  # host only network for some lessons
+  config.vm.network "private_network", type: "dhcp"
+
+  # lets add a few disks (VBox allows a total of 4 on the same controller)
+  config.vm.disk :disk, name: "disk1", size: "2GB"
+  config.vm.disk :disk, name: "disk2", size: "2GB"
+  config.vm.disk :disk, name: "disk3", size: "2GB"
+end
