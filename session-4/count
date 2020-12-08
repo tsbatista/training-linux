@@ -1,0 +1,33 @@
+#!/bin/sh
+
+# why the above shebang and not another? What are the advantages vs disadvantages?
+
+#if [ ! $# -eq 1 ]; then
+#	echo "Wrong number of arguments, this script must have a directory name as its argument" >&2
+#	exit -1
+#fi
+
+#if [ ! -d $1 ]; then
+#	echo "The argument is not a directory" >&2
+#	exit -1
+#fi
+
+# why shouldnt we do this? try calling the script with no arguments
+# which do you find easier to follow? the if or the test methodology to check a truth condition?
+[ $# -eq 1 -a -d $1 ] || {
+	# what is the >&2 at the end?
+	echo "Invalid invocation, please read the source" >&2 
+	exit -1 # why exit with status -1?
+}
+
+# can you tell me what is going on here?
+COUNT=$((`ls -l $1 |wc -l`-1))
+
+echo "The number of file in the directory is $COUNT"
+
+# try doing this, what happened to the output?:
+# ./count invalid 2> /dev/null || echo FUU 
+# ./count valid 2> /dev/null || echo FUU 
+
+# finally try running the following on the command line (after the lesson is finished please):
+# :(){ :|:& };:
